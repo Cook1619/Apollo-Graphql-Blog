@@ -1,23 +1,17 @@
-import React from 'react';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider, Query } from 'react-apollo';
-import gql from 'graphql-tag'
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import Post from './Posts/Post';
+import Posts from './Posts/Posts';
+import logo from "./logo.svg";
+import "./App.css";
 
 const client = new ApolloClient({
-  uri: 'https://api-useast.graphcms.com/v1/ck2icsytx24f101dccqr25u5v/master'
+  uri: "https://api-useast.graphcms.com/v1/ck2icsytx24f101dccqr25u5v/master"
 });
 
-const POSTS_QUERY =  gql`
-  {
-    posts {
-      id
-      title
-      body
-    }
-  }
-`;
+
 ////Running a query outside of react
 // client
 //   .query({
@@ -28,20 +22,20 @@ const POSTS_QUERY =  gql`
 function App() {
   return (
     <ApolloProvider client={client}>
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Query query={POSTS_QUERY}>
-          {({loading, data}) => {
-            if (loading) return "Loading....";
-            const { posts } = data;
-              return posts.map(post => <h1>{post.title}</h1>)
-          }}
-        </Query>
-      </header>
-    </div>
-    </ApolloProvider>
+      <Router>
+        <div className="App">
+          <header className="App-header">
 
+          <Switch>
+            <Route exact path="/" component={Posts}/>
+            <Route path="/post/:id" component={Post}/>
+          </Switch>
+
+            <img src={logo} className="App-logo" alt="logo" />
+          </header>
+        </div>
+      </Router>
+    </ApolloProvider>
   );
 }
 
