@@ -7,8 +7,16 @@ import Posts from "./Posts/Posts";
 import NewPost from "./Posts/Newpost";
 import "./App.css";
 
+const defaultState = {
+  isEditMode: false
+}
+
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPH_QL_KEY
+  uri: process.env.REACT_APP_GRAPH_QL_KEY,
+  clientState: {
+    defaults: defaultState,
+    resolvers: {},
+  }
 });
 
 ////Running a query outside of react
