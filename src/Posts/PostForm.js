@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class PostForm extends Component {
   static propTypes = {
@@ -8,13 +8,13 @@ export default class PostForm extends Component {
   };
 
   static defaultProps = {
-      post: {}
-  }
+    post: {}
+  };
 
   state = {
-    title: this.props.title || "",
-    body: this.props.body || "", 
-    id: this.props.id || ""
+    id: this.props.post.id || '',
+    title: this.props.post.title || '',
+    body: this.props.post.body || ''
   };
 
   handleInput = e => {
@@ -39,8 +39,8 @@ export default class PostForm extends Component {
           })
             .then(() => {
               this.setState({
-                title: "",
-                body: ""
+                title: '',
+                body: ''
               });
             })
             .catch(e => console.log(e));
@@ -59,8 +59,8 @@ export default class PostForm extends Component {
           onChange={this.handleInput}
           value={body}
           placeholder="body"
-        ></textarea>
-        <button>Submit</button>
+        />
+        <button className="button">Submit</button>
       </form>
     );
   }
