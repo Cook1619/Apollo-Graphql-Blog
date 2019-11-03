@@ -1,6 +1,6 @@
 import React from 'react';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, Query } from 'react-apollo';
 import gql from 'graphql-tag'
 import logo from './logo.svg';
 import './App.css';
@@ -9,7 +9,7 @@ const client = new ApolloClient({
   uri: 'https://api-useast.graphcms.com/v1/ck2icsytx24f101dccqr25u5v/master'
 });
 
-const testQuery =  gql`
+const POSTS_QUERY =  gql`
   {
     posts {
       id
@@ -18,12 +18,12 @@ const testQuery =  gql`
     }
   }
 `;
-
-client
-  .query({
-    query: testQuery
-  })
-  .then(res => console.log(res))
+////Running a query outside of react
+// client
+//   .query({
+//     query: testQuery
+//   })
+//   .then(res => console.log(res))
 
 function App() {
   return (
@@ -31,17 +31,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Query query={POSTS_QUERY}>
+          {({loading, data}) => {
+            if (loading) return "Loading....";
+            const { posts } = data;
+              return posts.map(post => <h1>{post.title}</h1>)
+          }}
+        </Query>
       </header>
     </div>
     </ApolloProvider>
