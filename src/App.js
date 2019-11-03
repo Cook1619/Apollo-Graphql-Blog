@@ -4,7 +4,7 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Post from './Posts/Post';
 import Posts from './Posts/Posts';
-import logo from "./logo.svg";
+import NewPost from './Posts/Newpost';
 import "./App.css";
 
 const client = new ApolloClient({
@@ -25,14 +25,16 @@ function App() {
       <Router>
         <div className="App">
           <header className="App-header">
-
+            <Link to={'/'}>
+              <h1>Graph QL App</h1>
+            </Link>
+          </header>
+          <Link to={'/post/new'}>New Post</Link>
           <Switch>
             <Route exact path="/" component={Posts}/>
+            <Route exact path="/post/new" component={NewPost}/>
             <Route path="/post/:id" component={Post}/>
-          </Switch>
-
-            <img src={logo} className="App-logo" alt="logo" />
-          </header>
+          </Switch>    
         </div>
       </Router>
     </ApolloProvider>

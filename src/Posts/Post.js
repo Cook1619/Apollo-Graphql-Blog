@@ -15,7 +15,6 @@ export default class Post extends Component {
                     const { post } = data;
                     return <h1>{post.title}</h1>;
                 }}
-                
             </Query>
         )
     }
