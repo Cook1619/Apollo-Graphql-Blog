@@ -1,39 +1,21 @@
-import React from "react";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
-import Post from "./Posts/Post";
-import Posts from "./Posts/Posts";
-import NewPost from "./Posts/Newpost";
-import "./App.css";
+import React, { Component } from 'react';
 
-const defaultState = {
-  isEditMode: false
-}
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import Post from './Posts/Post';
+import Posts from './Posts/Posts';
+import NewPost from './Posts/NewPost';
+import logo from './logo.svg';
+import './App.css';
 
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPH_QL_KEY,
-  clientState: {
-    defaults: defaultState,
-    resolvers: {},
-  }
-});
-
-////Running a query outside of react
-// client
-//   .query({
-//     query: testQuery
-//   })
-//   .then(res => console.log(res))
-
-function App() {
-  return (
-    <ApolloProvider client={client}>
+// Apollo Provider attached the client to our React app
+class App extends Component {
+  render() {
+    return (
       <Router>
         <div className="App">
           <header className="App-header">
-            <Link to={"/"}>
-              <h1>Graph QL App</h1>
+            <Link to={'/'}>
+              <h1 className="App-title">GraphQL is Great</h1>
             </Link>
           </header>
           <main>
@@ -45,8 +27,8 @@ function App() {
           </main>
         </div>
       </Router>
-    </ApolloProvider>
-  );
+    );
+  }
 }
 
 export default App;

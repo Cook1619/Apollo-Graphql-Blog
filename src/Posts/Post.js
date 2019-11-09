@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import { directive } from "@babel/types";
-import UpdatePost from "./UpdatePost";
-import EditMode from './EditMode'
+import React, { Component } from 'react';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import UpdatePost from './UpdatePost';
+import EditMode from './EditMode';
 
 export default class Post extends Component {
   render() {
@@ -16,11 +15,11 @@ export default class Post extends Component {
         }}
       >
         {({ data, loading }) => {
-          if (loading) return "Loading...";
+          if (loading) return 'Loading...';
           const { post, isEditMode } = data;
           return (
             <div>
-              <EditMode isEditMode={isEditMode}/>
+              <EditMode isEditMode={isEditMode} />
               {isEditMode ? (
                 <section>
                   <h1>Edit Post</h1>
@@ -29,6 +28,45 @@ export default class Post extends Component {
               ) : (
                 <section>
                   <h1>{post.title}</h1>
+                  <Mutation
+                    mutation={UPDATE_POST}
+                    variables={{
+                      id: post.id,
+                      check: !post.check
+                    }}
+                    optimisticResponse={{
+                      __typename: 'Mutation',
+                      updatePost: {
+                        __typename: 'Post',
+                        check: !post.check
+                      }
+                    }}
+                    update={(cache, { data: { updatePost } }) => {
+                      const data = cache.readQuery({
+                        query: POST_QUERY,
+                        variables: {
+                          id: post.id
+                        }
+                      });
+                      data.post.check = updatePost.check;
+                      cache.writeQuery({
+                        query: POST_QUERY,
+                        data: {
+                          ...data,
+                          post: data.post
+                        }
+                      });
+                    }}
+                  >
+                    {updatePost => (
+                      <input
+                        style={{ height: '100px' }}
+                        type="checkbox"
+                        checked={post.check}
+                        onChange={updatePost}
+                      />
+                    )}
+                  </Mutation>
                 </section>
               )}
             </div>
@@ -46,8 +84,16 @@ const POST_QUERY = gql`
       id
       title
       body
-      createdAt
+      check
     }
     isEditMode @client
+  }
+`;
+
+const UPDATE_POST = gql`
+  mutation updatePost($check: Boolean, $id: ID!) {
+    updatePost(where: { id: $id }, data: { check: $check }) {
+      check
+    }
   }
 `;

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PostForm from "./PostForm";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import React, { Component } from 'react';
+import PostForm from './PostForm';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
-export default class Newpost extends Component {
+export default class NewPost extends Component {
   render() {
     return (
       <div>

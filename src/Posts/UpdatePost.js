@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import PostForm from "./PostForm";
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import PostForm from './PostForm';
 
 export default class UpdatePost extends Component {
   render() {
@@ -10,12 +10,10 @@ export default class UpdatePost extends Component {
       <Mutation mutation={UPDATE_POST}>
         {(updatePost, result) => {
           const onSuccess = () =>
-            result.client.writeData({
-              data: {
-                isEditMode: false
-              }
-            });
-          return <PostForm post={post} onSubmit={updatePost} />;
+            result.client.writeData({ data: { isEditMode: false } });
+          return (
+            <PostForm post={post} onSuccess={onSuccess} onSubmit={updatePost} />
+          );
         }}
       </Mutation>
     );
